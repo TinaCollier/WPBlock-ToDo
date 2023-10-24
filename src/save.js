@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import DisplayItems from './displayItems';
 
 
+
 /**
  * The save function defines the way in which the different attributes should
  * be combined into the final markup, which is then serialized by the block
@@ -18,9 +19,9 @@ import DisplayItems from './displayItems';
  *
  * @return {Element} Element to render.
  */
-export default function save() {
-	const list = ['one', 'two', 'three'];
-	console.log( 'save' );
+export default function save( { attributes } ) {
+	const list = attributes.list;
+	console.log( 'save', attributes.list );
 	return (
 		<div { ...useBlockProps.save() }>
 			<h1>Today's Todos</h1>

@@ -11,6 +11,12 @@
 	"supports": {
 		"html": false
 	},
+	"attributes": {
+		"list": {
+			"type": "array",
+			"source": "query"
+		}
+	},
 	"textdomain": "wp-learn-todo-list",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

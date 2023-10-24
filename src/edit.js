@@ -32,31 +32,31 @@ import './editor.scss';
  *
  * @return {Element} Element to render.
  */
-export default function Edit() {
-	const [ todos, setTodos ] = useState([]);
+export default function Edit( { attributes, setAttributes } ) {
 	const [ todo, setTodo ] = useState("");
 
 	const addTodo = () => {
 		if ( todo !== "" ){
-			setTodos( [ ...todos, todo ] );
 			setTodo("");
+			setAttributes( { list: [ ...attributes.list, todo ] } )
 		}
 	};
 
-	const deleteTodo = ( text ) => {
-		const newTodos = todos.filter( ( todo ) => {
-			return todo !== text;
-		});
-		setTodos( newTodos );
-	}
+	// const deleteTodo = ( text ) => {
+	// 	const newTodos = attributes.list.filter( ( todo ) => {
+	// 		return todo !== text;
+	// 	});
+	// 	setAttributes( { list: newTodos } );
+	// }
 
-	console.log( 'edit' );
+	const deleteTodo = ( text ) => 
+		setAttributes( { list: attributes.list.filter( ( todo ) => todo !== text ) } );
+
 	return (
 		<div { ...useBlockProps() }>
 			<h1>Todo App</h1>
 			<TodoInput todo={ todo } setTodo={ setTodo } addTodo={ addTodo } />
-			<TodoList list={ todos } remove={ deleteTodo } /> 			
-
+			<TodoList list={ attributes.list } remove={ deleteTodo } /> 			
 		</div>
 	);
 }
