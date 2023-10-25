@@ -11,10 +11,14 @@ import { __ } from '@wordpress/i18n';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import { useBlockProps } from '@wordpress/block-editor';
+import { 
+	useBlockProps,
+	InspectorControls 
+} from '@wordpress/block-editor';
 import React, { useState } from 'react';
 import TodoInput from './todoInput';
 import TodoList from './todoList';
+import DisplayItems from './displayItems';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -34,7 +38,7 @@ import './editor.scss';
  */
 export default function Edit( { attributes, setAttributes } ) {
 	const [ todo, setTodo ] = useState("");
-
+	console.log(attributes.list);
 	const addTodo = () => {
 		if ( todo !== "" ){
 			setTodo("");
@@ -42,21 +46,22 @@ export default function Edit( { attributes, setAttributes } ) {
 		}
 	};
 
-	// const deleteTodo = ( text ) => {
-	// 	const newTodos = attributes.list.filter( ( todo ) => {
-	// 		return todo !== text;
-	// 	});
-	// 	setAttributes( { list: newTodos } );
-	// }
-
 	const deleteTodo = ( text ) => 
 		setAttributes( { list: attributes.list.filter( ( todo ) => todo !== text ) } );
 
 	return (
 		<div { ...useBlockProps() }>
-			<h1>Todo App</h1>
-			<TodoInput todo={ todo } setTodo={ setTodo } addTodo={ addTodo } />
-			<TodoList list={ attributes.list } remove={ deleteTodo } /> 			
+			<InspectorControls>
+				<div className="todo-controls">
+					<h1>Todo App</h1>
+					<TodoInput todo={ todo } setTodo={ setTodo } addTodo={ addTodo } />
+					<TodoList list={ attributes.list } remove={ deleteTodo } /> 
+				</div>
+			</InspectorControls>
+			<div>
+				<h1>Today's Todos</h1>
+				<DisplayItems list={ attributes.list } />
+			</div>	
 		</div>
 	);
 }

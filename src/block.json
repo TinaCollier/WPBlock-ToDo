@@ -14,7 +14,8 @@
 	"attributes": {
 		"list": {
 			"type": "array",
-			"source": "query"
+			"source": "query",
+			"default": []
 		}
 	},
 	"textdomain": "wp-learn-todo-list",

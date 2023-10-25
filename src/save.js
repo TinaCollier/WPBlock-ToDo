@@ -21,7 +21,6 @@ import DisplayItems from './displayItems';
  */
 export default function save( { attributes } ) {
 	const list = attributes.list;
-	console.log( 'save', attributes.list );
 	return (
 		<div { ...useBlockProps.save() }>
 			<h1>Today's Todos</h1>

@@ -4,15 +4,15 @@ const TodoList = ( { list, remove } ) => {
         { list?.length > 0 ? (
             <ul>
               { list.map(( entry, index ) => (
-                <div key={ index }>
-                  <li> { entry } </li>
-                  <button
+                <div className="list-item" key={ index }>
+                                    <button
                     onClick={ () => {
                       remove( entry );
                     }}
                   >
-                    Delete
+                    X
                   </button>
+                  <li> { entry } </li>
                 </div>
               ))}
             </ul>

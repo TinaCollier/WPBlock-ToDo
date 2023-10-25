@@ -15,12 +15,10 @@ __webpack_require__.r(__webpack_exports__);
 const DisplayItems = ({
   list
 }) => {
-  console.log('list', list);
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", null, list.map((item, index) => {
-    (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
-      key: index
-    }, item);
-  }));
+  const listItems = list.map((item, index) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
+    key: index
+  }, item));
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", null, list.length > 0 ? listItems : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", null, "Nothing to do!"));
 };
 /* harmony default export */ __webpack_exports__["default"] = (DisplayItems);
 
@@ -44,7 +42,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _todoInput__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./todoInput */ "./src/todoInput.js");
 /* harmony import */ var _todoList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./todoList */ "./src/todoList.js");
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
+/* harmony import */ var _displayItems__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./displayItems */ "./src/displayItems.js");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
 
 /**
  * Retrieves the translation of text.
@@ -59,6 +58,7 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
+
 
 
 
@@ -80,32 +80,37 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @return {Element} Element to render.
  */
-function Edit() {
-  const [todos, setTodos] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+function Edit({
+  attributes,
+  setAttributes
+}) {
   const [todo, setTodo] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
+  console.log(attributes.list);
   const addTodo = () => {
     if (todo !== "") {
-      setTodos([...todos, todo]);
       setTodo("");
+      setAttributes({
+        list: [...attributes.list, todo]
+      });
     }
   };
-  const deleteTodo = text => {
-    const newTodos = todos.filter(todo => {
-      return todo !== text;
-    });
-    setTodos(newTodos);
-  };
-  console.log('edit');
+  const deleteTodo = text => setAttributes({
+    list: attributes.list.filter(todo => todo !== text)
+  });
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)()
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "todo-controls"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "Todo App"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_todoInput__WEBPACK_IMPORTED_MODULE_3__["default"], {
     todo: todo,
     setTodo: setTodo,
     addTodo: addTodo
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_todoList__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    list: todos,
+    list: attributes.list,
     remove: deleteTodo
-  }));
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "Today's Todos"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_displayItems__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    list: attributes.list
+  })));
 }
 
 /***/ }),
@@ -199,9 +204,10 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @return {Element} Element to render.
  */
-function save() {
-  const list = ['one', 'two', 'three'];
-  console.log('save');
+function save({
+  attributes
+}) {
+  const list = attributes.list;
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ..._wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save()
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "Today's Todos"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_displayItems__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -226,7 +232,9 @@ const TodoInput = ({
   setTodo,
   addTodo
 }) => {
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "item-input"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "text",
     name: "todo",
     value: todo,
@@ -255,12 +263,13 @@ const TodoList = ({
   remove
 }) => {
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, list?.length > 0 ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", null, list.map((entry, index) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "list-item",
     key: index
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", null, " ", entry, " "), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: () => {
       remove(entry);
     }
-  }, "Delete")))) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "No task found")));
+  }, "X"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", null, " ", entry, " ")))) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "No task found")));
 };
 /* harmony default export */ __webpack_exports__["default"] = (TodoList);
 
@@ -336,7 +345,7 @@ module.exports = window["wp"]["i18n"];
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/wp-learn-todo-list","version":"0.1.0","title":"Wp Learn Todo List","category":"widgets","icon":"smiley","description":"Example block scaffolded with Create Block tool.","example":{},"supports":{"html":false},"textdomain":"wp-learn-todo-list","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/wp-learn-todo-list","version":"0.1.0","title":"Wp Learn Todo List","category":"widgets","icon":"smiley","description":"Example block scaffolded with Create Block tool.","example":{},"supports":{"html":false},"attributes":{"list":{"type":"array","source":"query","default":[]}},"textdomain":"wp-learn-todo-list","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js"}');
 
 /***/ })
 

@@ -1,6 +1,6 @@
 const TodoInput = ( { todo, setTodo, addTodo } ) => {
     return (
-        <div>
+        <div className="item-input">
             <input
                 type="text"
                 name="todo"
@@ -8,7 +8,9 @@ const TodoInput = ( { todo, setTodo, addTodo } ) => {
                 placeholder="Create a new todo"
                 onChange={ e => setTodo( e.target.value ) }
                 />
-            <button onClick={ addTodo }>
+            <button 
+            onClick={ addTodo }
+            >
                 Add
             </button>
         </div>
